@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Do Robust LVLMs Hallucinate More? — HALS</title>
+    <title>Do Robust LVLMs Hallucinate More? Uncovering Robustness-Induced Hallucination in Large Vision-Language Models — HALS</title>
     <link
       rel="icon"
       href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20" rx="5" fill="%230F1B2D"/><circle cx="5" cy="5.5" r="1.6" fill="%237FA3F0"/><circle cx="14.5" cy="5" r="1.6" fill="%239FB4CE"/><circle cx="5.5" cy="14" r="1.6" fill="%236FBF8F"/><circle cx="10.5" cy="10" r="2.4" fill="%23DE6A1E"/><path d="M12.6 8.2 C15 6.6 16.4 8.4 17.2 11.4" stroke="%237FA3F0" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>'
@@ -30,7 +30,7 @@
     ></script>
     <style>
       :root {
-        --paper: #f6f8fb;
+        --paper: #fafcff;
         --card: #ffffff;
         --ink: #0f1b2d;
         --slate: #57687f;
@@ -159,13 +159,14 @@
       .eyebrow {
         font-family: var(--mono);
         font-size: 13px;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--slate);
         display: flex;
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
+        margin-bottom: 4px;
       }
       .eyebrow .dot {
         width: 6px;
@@ -173,6 +174,49 @@
         border-radius: 50%;
         background: var(--halluc);
         display: inline-block;
+      }
+      .badge-accepted {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: linear-gradient(135deg, #1a3fa8 0%, #2251c9 100%);
+        color: #fff;
+        font-family: var(--sans);
+        font-size: 13.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: none;
+        padding: 6px 14px 6px 10px;
+        border-radius: 999px;
+        box-shadow: 0 2px 12px rgba(34,81,201,0.28);
+        white-space: nowrap;
+      }
+      .badge-accepted .badge-star {
+        font-size: 15px;
+        line-height: 1;
+      }
+      .badge-sep {
+        color: var(--mist);
+        font-size: 15px;
+      }
+      .topic-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .topic-tag {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1.5px solid var(--mist);
+        background: var(--card);
+        color: var(--slate);
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-weight: 500;
       }
       h1 {
         font-family: var(--serif);
@@ -740,41 +784,60 @@
       }
 
       /* ---------- bibtex ---------- */
-      pre.bib {
-        background: var(--ink);
-        color: #e8eef7;
-        border-radius: 14px;
-        padding: 24px;
-        font-family: var(--mono);
-        font-size: 13.5px;
-        line-height: 1.7;
-        overflow-x: auto;
-        margin-top: 28px;
-        position: relative;
-      }
-      .copy-btn {
-        position: absolute;
-        top: 14px;
-        right: 14px;
-        font-family: var(--mono);
-        font-size: 12px;
-        background: transparent;
-        color: #afc2de;
-        border: 1px solid #3a4b63;
-        border-radius: 8px;
-        padding: 6px 12px;
-        cursor: pointer;
-      }
-      .copy-btn:hover {
-        color: #fff;
-        border-color: #fff;
-      }
 
       footer {
         padding: 48px 0 64px;
         border-top: 1px solid var(--mist);
         font-size: 14px;
         color: var(--slate);
+      }
+
+      /* ---------- acknowledgements ---------- */
+      #acknowledgements {
+        padding: 72px 0 64px;
+        border-top: 1px solid var(--mist);
+      }
+      .ack-box {
+        background: #ffffff;
+        border: 1px solid var(--mist);
+        border-radius: 20px;
+        box-shadow: 0 4px 24px rgba(15,27,45,0.06);
+        padding: 48px 64px;
+        margin-top: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 80px;
+        flex-wrap: wrap;
+      }
+      .ack-logo-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+      .ack-logo-item img {
+        height: 110px;
+        width: auto;
+        object-fit: contain;
+        transition: transform 0.2s;
+      }
+      .ack-logo-item img:hover {
+        transform: scale(1.05);
+      }
+      .ack-logo-item span {
+        font-size: 12px;
+        color: var(--slate);
+        font-family: var(--mono);
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+      .ack-text {
+        margin-top: 20px;
+        font-size: 15px;
+        color: var(--slate);
+        max-width: 720px;
+        line-height: 1.7;
       }
     </style>
   </head>
@@ -838,9 +901,8 @@
         <div class="navlinks">
           <a href="#abstract">Abstract</a>
           <a href="#findings">Findings</a>
-          <a href="#method">Method</a>
           <a href="#results">Results</a>
-          <a href="#bibtex">Cite</a>
+          <a href="#acknowledgements">Acknowledgements</a>
         </div>
       </div>
     </nav>
@@ -848,28 +910,29 @@
     <header id="top">
       <div class="wrap">
         <div class="eyebrow">
-          <span class="dot"></span>NeurIPS 2026 · Under review · Multimodal
-          reliability
+          <span class="badge-accepted">
+            <span class="badge-star">🏆</span>
+            NeurIPS 2026 &nbsp;·&nbsp; Accepted, Main Track
+          </span>
+        </div>
+        <div class="topic-tags">
+          <span class="topic-tag">Multimodal Reliability</span>
+          <span class="topic-tag">AI Alignment &amp; Safety</span>
+          <span class="topic-tag">Trustworthy AI</span>
         </div>
         <h1>Do robust LVLMs <span class="q">hallucinate more?</span></h1>
         <p class="subtitle">
-          Uncovering robustness-induced hallucination in large vision-language
-          models — and steering it away with <b>HALS</b>.
+          Uncovering Robustness-Induced Hallucination in Large Vision-Language Models
         </p>
-        <!-- <div class="authors">
-
-      <span>Md Zarif Hossain<sup>1</sup></span>
-      <span>Co-author Name<sup>1</sup></span>
-      <span>Co-author Name<sup>2</sup></span>
-    </div> -->
-        <!-- <div class="affil">
-          <sup>1</sup>Institution One &nbsp;·&nbsp; <sup>2</sup>Institution Two
-        </div> -->
+        <div class="authors">
+          <span>Md Zarif Hossain</span>
+          <span>Awal Ahmed Fime</span>
+          <span>Ahmed Imteaj</span>
+        </div>
         <div class="btnrow">
           <a class="btn primary" href="#">📄 Paper</a>
           <a class="btn" href="#">arXiv</a>
           <a class="btn" href="#">Code</a>
-          <a class="btn" href="#bibtex">BibTeX</a>
         </div>
       </div>
     </header>
@@ -886,7 +949,7 @@
           <b>38%</b>: tokens from distinct spatial regions become nearly
           interchangeable. We call this
           <em class="term">spatial token homogenization</em>. Drag α to
-          homogenize the tokens yourself (Eq. 4) and watch the decoder abandon
+          homogenize the tokens yourself and watch the decoder abandon
           what it sees for what it expects.
         </p>
 
@@ -997,7 +1060,7 @@
             training increases inter-token similarity by up to 38%. We refer to
             this phenomenon as <b>spatial token homogenization</b>. We further
             demonstrate that spatial token homogenization degrades visual
-            information and amplifies the decoder's reliance on language priors.
+            information and amplifies decoder's reliance on language priors.
             Motivated by our findings, we propose
             <b>Homogenization-Aware Latent Steering (HALS)</b>, a training-free
             inference-time method that steers decoder hidden states away from
@@ -1007,7 +1070,7 @@
             hallucination mitigation methods on robust LVLMs, reducing CHAIR<sub
               >S</sub
             >
-            by 31.3 points on average, improving POPE accuracy by 2.6 points,
+            by 31.3 points on average, improving POPE accuracy by 2.6 points
             and achieving a 30.6% reduction in hallucination on AMBER. Moreover,
             robustness evaluations confirm that HALS preserves adversarial
             performance, demonstrating that robust LVLMs can be made visually
@@ -1020,7 +1083,7 @@
     <section id="findings">
       <div class="wrap">
         <div class="label">Findings at a glance</div>
-        <h2>Robustness has a hidden cost. HALS pays it back.</h2>
+        <h2>Adversarial robustness degrades visual grounding. HALS recovers it — at inference, for free.</h2>
         <div class="cards">
           <div class="card warn">
             <div class="num">+38%</div>
@@ -1132,21 +1195,10 @@
     <section>
       <div class="wrap">
         <div class="label">Why it happens</div>
-        <h2>From frequency suppression to language-prior dominance</h2>
+        <h2>From visual token homogenization to language-prior dominance</h2>
         <div class="chain">
           <div class="chain-step">
             <div class="chain-mark">a</div>
-            <div>
-              <h4>Adversarial training suppresses high-frequency features</h4>
-              <p>
-                Texture and color — precisely the local cues that distinguish
-                one patch from its neighbors — are dampened to achieve
-                perturbation invariance.
-              </p>
-            </div>
-          </div>
-          <div class="chain-step">
-            <div class="chain-mark">b</div>
             <div>
               <h4>Visual tokens homogenize</h4>
               <p>
@@ -1160,7 +1212,7 @@
             </div>
           </div>
           <div class="chain-step">
-            <div class="chain-mark">c</div>
+            <div class="chain-mark">b</div>
             <div>
               <h4>The decoder leans on language priors</h4>
               <p>
@@ -1171,88 +1223,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="method">
-      <div class="wrap">
-        <div class="label">Method</div>
-        <h2>HALS: Homogenization-Aware Latent Steering</h2>
-        <p>
-          HALS is <b>training-free</b> and leaves the robust vision encoder
-          untouched. It targets the decoder-side symptom directly, in three
-          steps:
-        </p>
-        <div class="chain">
-          <div class="chain-step">
-            <div class="chain-mark">1</div>
-            <div>
-              <h4>Simulate the failure</h4>
-              <p>
-                For each calibration image, generate a grounded caption from
-                clean tokens (\(\alpha = 0\)) and a hallucination-prone caption
-                from homogenized tokens (\(\alpha_h = 0.7\), chosen because it
-                reproduces the token cosine similarity of robust encoders).
-              </p>
-            </div>
-          </div>
-          <div class="chain-step">
-            <div class="chain-mark">2</div>
-            <div>
-              <h4>Extract the steering direction</h4>
-              <p>
-                For each calibration pair, contrast the decoder hidden states of
-                the grounded caption \(c_k^{+}\) and the hallucinated caption
-                \(c_k^{-}\) under the <i>same</i> homogenized tokens
-                \(Z_k^{\alpha_h}\), then take the first principal direction
-                across \(K = 200\) pairs:
-              </p>
-              <div class="eq">
-                \[ \Delta_\ell^{(k)} \;=\; h_{\ell,t}\big(c_k^{+},\,
-                Z_k^{\alpha_h}\big) \;-\; h_{\ell,t}\big(c_k^{-},\,
-                Z_k^{\alpha_h}\big) \]
-              </div>
-              <div class="eq">
-                \[ d_\ell \;=\; \mathrm{PCA}_1\!\left[\,\Delta_\ell^{(1)},\;
-                \Delta_\ell^{(2)},\; \ldots,\; \Delta_\ell^{(K)}\,\right] \]
-              </div>
-              <p>
-                Here \(h_{\ell,t}\) is the hidden state of the last text token
-                at decoder layer \(\ell\), so it encodes the full preceding
-                context; PCA removes example-specific noise and yields a
-                generalized layer-wise direction \(d_\ell\).
-              </p>
-            </div>
-          </div>
-          <div class="chain-step">
-            <div class="chain-mark">3</div>
-            <div>
-              <h4>Steer at inference</h4>
-              <p>
-                Inject the pre-computed direction \(d_\ell\) into the decoder
-                hidden states during autoregressive generation, scaled by
-                steering strength \(\lambda\) — one vector, computed once,
-                applied at 10.2 tokens/s (the fastest among compared mitigation
-                methods):
-              </p>
-              <div class="eq">
-                \[ h_{\ell,t}^{\,Q,I} \;\leftarrow\; h_{\ell,t}^{\,Q,I} \;+\;
-                \lambda\, d_\ell \]
-              </div>
-              <p>
-                No vision-encoder changes, no parameter updates. \(\lambda =
-                1.2\) for open-ended generation (CHAIR, AMBER, MMHal-Bench) and
-                \(\lambda = 0.2\) for discriminative tasks (POPE, MME).
-              </p>
-            </div>
-          </div>
-        </div>
-        <p style="margin-top: 8px">
-          Steering vectors transfer across LVLMs with compatible decoder depth
-          (LLaVA-v1.5 → ShareGPT4V; LLaVA-Next → MiniGPT-4), and HALS also
-          mitigates hallucination under transformation-based defenses (TTC, AOM)
-          and even under the vanilla encoder.
-        </p>
       </div>
     </section>
 
@@ -1688,22 +1658,18 @@
       </div>
     </section>
 
-    <section id="bibtex">
+    <section id="acknowledgements">
       <div class="wrap">
-        <div class="label">Citation</div>
-        <h2>BibTeX</h2>
-        <pre
-          class="bib"
-          id="bibText"
-        ><button class="copy-btn" id="copyBib" aria-label="Copy BibTeX">Copy</button>@inproceedings{anonymous2026robust,
-  title     = {Do Robust {LVLMs} Hallucinate More? Uncovering
-               Robustness-Induced Hallucination in Large
-               Vision-Language Models},
-  author    = {Anonymous},
-  booktitle = {Advances in Neural Information Processing Systems},
-  year      = {2026},
-  note      = {Under review}
-}</pre>
+        <h2>Acknowledgements</h2>
+        <div class="ack-box">
+          <div class="ack-logo-item">
+            <img src="src/lab_logo.png" alt="Lab Logo" />
+          </div>
+          <div class="ack-logo-item">
+            <img src="src/nsf_logo.png" alt="NSF Logo" />
+          </div>
+        </div>
+    
       </div>
     </section>
 
